@@ -6,13 +6,13 @@
       "components": [
         {
           "component_name": "coucha",
-          "image": "registry.giantswarm.io/marian/couchdb",
+          "image": "registry.giantswarm.io/$username/couchdb",
           "ports": [5984],
           "env": {
             "COUCHDB_PASS": "THEcouchDBdemo"
           },
           "domains": {
-            "a.couchdemo.gigantic.io": 5984
+            "a.couchdemo-$username.gigantic.io": 5984
           },
           "volumes": [
             {
@@ -28,13 +28,13 @@
       "components": [
         {
           "component_name": "couchb",
-          "image": "registry.giantswarm.io/marian/couchdb",
+          "image": "registry.giantswarm.io/$username/couchdb",
           "ports": [5984],
           "env": {
             "COUCHDB_PASS": "THEcouchDBdemo"
           },
           "domains": {
-            "b.couchdemo.gigantic.io": 5984
+            "b.couchdemo-$username.gigantic.io": 5984
           },
           "volumes": [
             {
