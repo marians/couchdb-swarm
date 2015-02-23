@@ -1,0 +1,49 @@
+{
+  "app_name": "couch-demo",
+  "services": [
+    {
+      "service_name": "coucha",
+      "components": [
+        {
+          "component_name": "coucha",
+          "image": "registry.giantswarm.io/marian/couchdb",
+          "ports": [5984],
+          "env": {
+            "COUCHDB_PASS": "THEcouchDBdemo"
+          },
+          "domains": {
+            "a.couchdemo.gigantic.io": 5984
+          },
+          "volumes": [
+            {
+              "path": "/usr/local/var/lib/couchdb",
+              "size": "2 GB"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "service_name": "couchb",
+      "components": [
+        {
+          "component_name": "couchb",
+          "image": "registry.giantswarm.io/marian/couchdb",
+          "ports": [5984],
+          "env": {
+            "COUCHDB_PASS": "THEcouchDBdemo"
+          },
+          "domains": {
+            "b.couchdemo.gigantic.io": 5984
+          },
+          "volumes": [
+            {
+              "path": "/usr/local/var/lib/couchdb",
+              "size": "2 GB"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
