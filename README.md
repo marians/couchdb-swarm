@@ -48,19 +48,29 @@ First, we create a database on A
 
 Then we create a first document:
 
-	curl -X PUT http://admin:THEcouchDBdemo@a.couchdemo.gigantic.io/demo/d516241ea9546cb9bd911f902b000aee -d '{"title": "First test document", "description": "Created on A"}'
+	curl -X PUT \
+		http://admin:THEcouchDBdemo@a.couchdemo.gigantic.io/demo/d516241ea9546cb9bd911f902b000aee \
+		-d '{"title": "First test document", "description": "Created on A"}'
 
 ### 2. Create continuous replica from A to B ...
 
-	curl -X POST http://admin:THEcouchDBdemo@a.couchdemo.gigantic.io/_replicate -d '{"source": "demo","target": "http://admin:THEcouchDBdemo@b.couchdemo.gigantic.io/demo", "create_target": true, "continuous": true}' -H "Content-Type: application/json"
+	curl -X POST \
+		http://admin:THEcouchDBdemo@a.couchdemo.gigantic.io/_replicate \
+		-d '{"source": "demo","target": "http://admin:THEcouchDBdemo@b.couchdemo.gigantic.io/demo", "create_target": true, "continuous": true}' \
+		-H "Content-Type: application/json"
 
 ### 3. ... and vice versa
 
-	curl -X POST http://admin:THEcouchDBdemo@b.couchdemo.gigantic.io/_replicate -d '{"source": "demo","target": "http://admin:THEcouchDBdemo@a.couchdemo.gigantic.io/demo", "create_target": true, "continuous": true}' -H "Content-Type: application/json"
+	curl -X POST \
+		http://admin:THEcouchDBdemo@b.couchdemo.gigantic.io/_replicate \
+		-d '{"source": "demo","target": "http://admin:THEcouchDBdemo@a.couchdemo.gigantic.io/demo", "create_target": true, "continuous": true}' \
+		-H "Content-Type: application/json"
 
 ### 4. Adding another document on B
 
-	curl -X PUT http://admin:THEcouchDBdemo@b.couchdemo.gigantic.io/demo/72f5c2e7265683f6f341d7e1b2000ba0 -d '{"title": "Second test document", "description": "Created on B"}'
+	curl -X PUT \
+		http://admin:THEcouchDBdemo@b.couchdemo.gigantic.io/demo/72f5c2e7265683f6f341d7e1b2000ba0 \
+		-d '{"title": "Second test document", "description": "Created on B"}'
 
 ### 5. Fetching this document from A
 
@@ -72,7 +82,9 @@ Then we create a first document:
 
 ### 7. Create another document on A
 
-	curl -X PUT http://admin:THEcouchDBdemo@a.couchdemo.gigantic.io/demo/371bd2c52d2bc0ed6b240fa4d6001965 -d '{"title": "Third test document", "description": "Created on A"}'
+	curl -X PUT \
+		http://admin:THEcouchDBdemo@a.couchdemo.gigantic.io/demo/371bd2c52d2bc0ed6b240fa4d6001965 \
+		-d '{"title": "Third test document", "description": "Created on A"}'
 
 ### 8. Start B again
 
