@@ -23,8 +23,8 @@ import requests
 import json
 import string
 
-def random_string(length):
-   return ''.join(random.choice(string.lowercase + string.uppercase + [" "]) for i in range(length))
+def random_string(length=100):
+   return ''.join(random.choice(string.lowercase + string.uppercase) for i in range(length))
 
 def init_dbs(dbname="benchmark"):
 	"""
@@ -65,7 +65,7 @@ def init_dbs(dbname="benchmark"):
 	r.raise_for_status()
 
 
-def write_documents(host, dbname="benchmark", num=1000):
+def write_documents(host, dbname="benchmark", num=100):
 	"""Writes num documents on host, returns list of IDs"""
 	ids = []
 	couch = couchdb.Server("http://%s:%s@%s/" % (COUCH_USER, COUCH_PASS, host))
@@ -74,7 +74,7 @@ def write_documents(host, dbname="benchmark", num=1000):
 	start = time.time()
 	for n in range(num):
 		doc = {
-			"string": random_string(),
+			"string": random_string(2000),
 			"number": 123,
 			"float": 1.234,
 			"bool": True
@@ -93,7 +93,7 @@ def read_documents(doc_ids, host, dbname="benchmark"):
 	print("Reading docs from host %s" % host)
 	start = time.time()
 	for doc_id in doc_ids:
-		doc = db[doc_id]
+		doc = dict(db[doc_id])
 	end = time.time()
 	duration = end - start
 	print("  Duration: %.3f Sec (%.3f docs/sec)" % (duration, float(len(doc_ids))/duration))
