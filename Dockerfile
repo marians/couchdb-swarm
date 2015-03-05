@@ -40,6 +40,8 @@ RUN curl -O http://apache.openmirror.de/couchdb/source/1.6.1/apache-couchdb-1.6.
 	&& make \
 	&& make install
 
+RUN cp js/src/Linux_All_OPT.OBJ/libjs* /usr/lib/
+
 VOLUME /usr/local/var/lib/couchdb
 
 # Make CouchDB listen on all addresses
