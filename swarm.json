@@ -44,6 +44,23 @@
           ]
         }
       ]
+    },
+    {
+      "service_name": "couchdb-lb",
+      "components": [
+        {
+          "component_name": "nginx",
+          "image": "registry.giantswarm.io/$username/nginx-couchdb-lb",
+          "ports": [80],
+          "domains": {
+            "lb.couchdemo-$username.gigantic.io": 80
+          },
+          "dependencies": [
+            {"name": "coucha/coucha", "port": 5984, "alias": "coucha"},
+            {"name": "couchb/couchb", "port": 5984, "alias": "couchb"}
+          ]
+        }
+      ]
     }
   ]
 }

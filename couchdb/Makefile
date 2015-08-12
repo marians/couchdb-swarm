@@ -1,6 +1,6 @@
 PROJECT = couchdb
 REGISTRY = registry.giantswarm.io
-USERNAME :=  $(shell swarm user)
+USERNAME := $(shell swarm user)
 
 docker-build:
 	docker build -t $(REGISTRY)/$(USERNAME)/$(PROJECT) .
