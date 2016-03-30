@@ -3,44 +3,41 @@
 
 FROM debian:wheezy
 
-MAINTAINER Marian Steinbach <marian@giantswarm.io>
-
-
 ENV DEBIAN_FRONTEND noninteractive
+ENV COUCHDB_VERSION 1.6.1
 
-#install CouchDB
-RUN apt-get update -q && \
-    apt-get install -q -y --no-install-recommends \
-    	curl \
-    	pwgen \
-    	build-essential \
-		erlang-base-hipe \
-		erlang-dev \
-		erlang-manpages \
-		erlang-eunit \
-		erlang-nox \
-		libicu-dev \
-		libmozjs-dev \
-		libcurl4-openssl-dev \
+# install base packages
+RUN set -x && \
+    apt-get update -qq && \
+    apt-get install -qq -y --no-install-recommends \
+        curl \
+        pwgen \
+        build-essential \
+        erlang-base-hipe \
+        erlang-dev \
+        erlang-manpages \
+        erlang-eunit \
+        erlang-nox \
+        libicu-dev \
+        libmozjs185-dev \
+        libcurl4-openssl-dev \
+        python \
+        zip \
+    && cd / \
+    # Build couchdb from source
+    && curl -O http://apache.openmirror.de/couchdb/source/$COUCHDB_VERSION/apache-couchdb-$COUCHDB_VERSION.tar.gz \
+    && tar xzf apache-couchdb-$COUCHDB_VERSION.tar.gz \
+    && rm apache-couchdb-$COUCHDB_VERSION.tar.gz \
+    && cd apache-couchdb-$COUCHDB_VERSION \
+    && ./configure --prefix=/usr/local --with-js-lib=/usr/local/lib --with-js-include=/usr/local/include \
+    && make \
+    && make install \
+    && cd / \
+    # clean up
+    && rm -rf apache-couchdb-$COUCHDB_VERSION \
+    && apt-get remove -qq -y build-essential libcurl4-openssl-dev erlang-dev libicu-dev python zip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-
-# Build SpiderMonkey rom source
-RUN curl -O http://ftp.mozilla.org/pub/mozilla.org/js/js-1.8.0-rc1.tar.gz \
-	&& tar xzf js-1.8.0-rc1.tar.gz \
-	&& cd js/src \
-	&& make BUILD_OPT=1 -f Makefile.ref \
-	&& make BUILD_OPT=1 JS_DIST=/usr/local -f Makefile.ref export
-
-# Build couchdb from source
-RUN curl -O http://apache.openmirror.de/couchdb/source/1.6.1/apache-couchdb-1.6.1.tar.gz \
-	&& tar xzf apache-couchdb-1.6.1.tar.gz \
-	&& cd apache-couchdb-1.6.1 \
-	&& ./configure --prefix=/usr/local --with-js-lib=/usr/local/lib --with-js-include=/usr/local/include \
-	&& make \
-	&& make install
-
-RUN cp js/src/Linux_All_OPT.OBJ/libjs* /usr/lib/
 
 VOLUME /usr/local/var/lib/couchdb
 
